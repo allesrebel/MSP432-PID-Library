@@ -53,8 +53,7 @@ extern unsigned long __STACK_END;
 
 
 /* External declarations for the interrupt handlers used by the application. */
-
-/* To be added by user */
+extern void timerA0_ISR(void);
 
 
 /* Intrrupt vector table.  Note that the proper constructs must be placed on this to  */
@@ -88,8 +87,8 @@ void (* const interruptVectors[])(void) =
     defaultISR,                             /* FLCTL ISR                 */
     defaultISR,                             /* COMP0 ISR                 */
     defaultISR,                             /* COMP1 ISR                 */
-    defaultISR,                             /* TA0_0 ISR                 */
-    defaultISR,                             /* TA0_N ISR                 */
+	timerA0_ISR,                            /* TA0_0 ISR                 */
+	defaultISR,                             /* TA0_N ISR                 */
     defaultISR,                             /* TA1_0 ISR                 */
     defaultISR,                             /* TA1_N ISR                 */
     defaultISR,                             /* TA2_0 ISR                 */
