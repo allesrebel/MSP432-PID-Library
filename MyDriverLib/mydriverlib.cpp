@@ -19,7 +19,22 @@ void setup_TimerA0(){
 	// Configure CCR0 to fire an Interrupt every 1ms for millis()
 	TA0CCTL0 = CCIE;		// Interrupt enable
 	NVIC_ISER0 = 1 << ((INT_TA0_0 - 16) & 31);	//	Add to NVIC
+
+	// CCR0 Configuration
 	TA0CCR0 = ticks_1ms;	// 1ms of time per fire
+
+	// CCR1 Configuration for PWM with Output Port
+	TA0CCTL1 = OUTMOD_6;
+	P2DIR |= BIT4;	//
+	P2SEL0 |= BIT4;	//	Enable Output On P2.4
+	P2SEL1 &= ~BIT4;//
+}
+
+/*
+ * Configure CCR1's Value
+ */
+void set_TimerA0_CCR1(uint32_t ticks){
+	TA0CCR1 = ticks;
 }
 
 /*
@@ -74,6 +89,43 @@ void setup_clock() {
 //    P4DIR |= BIT3;
 //    P4SEL0 |=BIT3;                         // Output MCLK
 //    P4SEL1 &= ~(BIT3);
+}
+
+//	Set up the ADC for 10 Bit operation
+//	With Continous Samples on the same channel
+void setup_ADC(){
+	ADC14CTL0 &= ~(ADC14ENC);	// Allow configuration fo the ADC14 Module
+	//			Use mclk , single ch conv,  signal from sample timer
+	ADC14CTL0 = ADC14SSEL__MCLK |	ADC14CONSEQ_0 | ADC14SHP | ADC14ON ;
+	ADC14CTL1 = ADC14RES__10BIT;	// Mod to get speed and resolution required!
+
+	// Set up INPUT channel source for ADC14MEM
+	ADC14MCTL0 = ADC14INCH_0;
+
+	// Set up A0 Pin on Board (P5.5)
+	P5SEL0 |= BIT5;
+	P5SEL1 |= BIT5;
+
+	// Set up Interrupt for Conversion Success
+	NVIC_ISER0 = 1 << ((INT_ADC14 - 16) & 31);// Enable ADC interrupt in NVIC module
+	ADC14IER0 = ADC14IE0;                     // Enable ADC14IFG.0
+}
+
+/*
+ * Calculates the number ticks required to generate a desired
+ * number of ticks needed to achieve frequency
+ * Note assumes that Operating Frequency is greater than Target
+ */
+uint32_t pwmFreqTicksCalc(uint32_t target_freq, uint32_t operating_freq){
+	double period_desired = (double)1/target_freq;
+	double period_operating = (double)1/operating_freq;
+	return period_desired/period_operating;
+}
+
+//	Start the Sampling and Conversion from P5.5
+void start_ADC(){
+	//Start Conversions from the selected channel
+	ADC14CTL0 |= ADC14ENC | ADC14SC;        // Start conversion -software trigger
 }
 
 // API Function Millis() - Returns milliseconds elapsed
