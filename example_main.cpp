@@ -29,6 +29,7 @@ void main(void){
     //	Configure Hardware
     setup_clock();
     setup_TimerA0();	// Operates at 3MHz
+    setup_ADC();
 
     //	Configure the max range for the PWM signal
     maxRange = pwmFreqTicksCalc(pwmFreq, 3000000);
