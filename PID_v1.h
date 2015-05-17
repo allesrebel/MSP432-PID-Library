@@ -50,6 +50,7 @@ class PID
 	double GetKd();						  // where it's important to know what is actually
 	int GetMode();						  //  inside the PID.
 	int GetDirection();					  //
+	int GetSampleTime();
 
   private:
 	void Initialize();
