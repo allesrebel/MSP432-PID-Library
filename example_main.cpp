@@ -51,6 +51,7 @@ void main(void){
 
 		if(timeChange >= sampleTime){
 			start_ADC();	// Grab the value on port 5.5
+			lastTime = now;
 		}
     }
 
