@@ -36,6 +36,9 @@ void main(void){
     //	Set the range in the PID Controller
     myPID.SetOutputLimits(0, maxRange-1);
 
+    //	Configure the Set Point
+    Setpoint = 100;
+
     __enable_interrupts();
 
     //	Infinite Loop - SW starts here
