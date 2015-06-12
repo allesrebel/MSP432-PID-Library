@@ -26,10 +26,8 @@ extern "C" void ADC_ISR(){
 void main(void){
     WDTCTL = WDTPW | WDTHOLD;           // Stop watchdog timer
 
-    //	Configure Hardware
-    setup_clock();
-    setup_TimerA0();	// Operates at 3MHz
-    setup_ADC();
+    //	Init the Driver Lib
+    init_driverLib();
 
     //	Configure the max range for the PWM signal
     maxRange = pwmFreqTicksCalc(pwmFreq, 3000000);

@@ -33,6 +33,8 @@ uint32_t pwmFreqTicksCalc(uint32_t target_freq, uint32_t operating_freq);
 //---------------------------------------------------------
 //	Library Init Functions
 //---------------------------------------------------------
+//	Init Driver Library to emulate Ardunio Library Functions
+void init_driverLib();
 
 //	Set up Clocks MCLK, SMCLK, and ACLK to 48MHz
 void setup_clock();

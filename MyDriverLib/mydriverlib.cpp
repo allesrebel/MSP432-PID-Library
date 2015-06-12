@@ -133,6 +133,13 @@ uint32_t millis(){
 	return millisecond_count;
 }
 
+void init_driverLib(){
+	//	Configure Hardware
+	setup_clock();
+	setup_TimerA0();
+	setup_ADC();
+}
+
 // ISR Millisecond incrementor
 extern "C" void timerA0_ISR(void){
 	TA0CCTL0 &= ~CCIFG;	// Clear the Interrupt
